@@ -1,5 +1,6 @@
 import random , sys , time , pickle
 from rich.prompt import Prompt as p
+from rich.console import Console as c
 
 def print_slow(str , t=0.05):
     t = 0.00000001
@@ -9,10 +10,10 @@ def print_slow(str , t=0.05):
         time.sleep(t)
 
 def animation(string):
-    print("\n", end="")
+    c.print("\n", end="")
     for i in range(len(string)):
-        print(" "*(i+1), end="\r")
-        print("|"*(i+1) + string[i:], end="\r")
+        c.print(" "*(i+1), end="\r")
+        c.print("|"*(i+1) + string[i:], end="\r")
         time.sleep(0.1)
 
 animation(' ||| Welcome! |||')
@@ -43,9 +44,9 @@ class Player:
         self.health = self.initial_health
         self.damage = self.initial_damage
         
-        print('\n')
+        c.print('\n')
         print_slow(f"Your health has been restored to {self.health} and, damage to {self.damage}")
-        print('\n')
+        c.print('\n')
 
     def level_up(self):
         
@@ -53,39 +54,39 @@ class Player:
         self.health += 20
         self.damage += 5
         
-        print('\n')
+        c.print('\n')
         print_slow(f"You're now level {self.level}")
-        print('\n')
+        c.print('\n')
     
     def pick_up_item(self, item):
         
         self.inventory.append(item)
         
-        print('\n')
-        print(f"You picked up a {item}")
-        print('\n')
+        c.print('\n')
+        c.print(f"You picked up a {item}")
+        c.print('\n')
 
     def drop_item(self, item):
         
         self.inventory.remove(item)
         
-        print('\n')
-        print(f"You dropped the {item}")
-        print('\n')
+        c.print('\n')
+        c.print(f"You dropped the {item}")
+        c.print('\n')
 
     def take_damage(self, damage):
         
         self.health -=float(damage)
         
-        print('\n')
-        print(f"You took {damage} damage, your health is now {round(self.health,1)}")
-        print('\n')
+        c.print('\n')
+        c.print(f"You took {damage} damage, your health is now {round(self.health,1)}")
+        c.print('\n')
         
 class Game:
     
     def run(self):
     
-        print('''\n
+        c.print('''\n
             1) Start game | 2) Skip to hallway | 3) load a game''')
         
         option = int(p.ask("[>] Select one"))
@@ -95,15 +96,15 @@ class Game:
         elif option == 2:
             self.hallway()
         elif option ==3:
-            print(WIP)
+            c.print(WIP)
             self.eng_class()
 
     
     def hallway(self):
         
-        print('\n')
+        c.print('\n')
         print_slow("You're in the school hallway.\n", t=0.01)
-        print('''\nWhat would you like to do?\n
+        c.print('''\nWhat would you like to do?\n
               1) Go to Bathroom  | 2) Go to Janitor's Closet
               3) Talk To Teacher | 4) Go throught main door\n''')
         
@@ -131,7 +132,7 @@ class Game:
                 ans  = p.ask('[>] Leave by front door?',
                       choices=['y','n'])
                 if ans == 'y':
-                    print(WIP)
+                    c.print(WIP)
                 else:
                     print_slow('Okay then...? just stayy in the school i guess... Nerd')
                     self.hallway()
@@ -159,7 +160,7 @@ class Game:
                 self.hallway()
                 
             else:
-                print('You guessed it..\n')
+                c.print('You guessed it..\n')
                 print_slow('The door slowly opens to the janitors face', t= 0.1)
                 
                 animation('Janitor Fight') ; print_slow('||| Fight Initiated |||')
@@ -175,14 +176,14 @@ class Game:
 
     def bathroom(self):
         
-        print('\n')
+        c.print('\n')
         print_slow('You walk into the bathroom and do your business\n')
         time.sleep(1)
         print_slow('You walk out and relise that your in the wrong bathroom...\n')
         time.sleep(1)
         print_slow('You slowly walk out...\n')
         time.sleep(2)
-        print('\n')
+        c.print('\n')
         self.hallway()
 
     def eng_class(self):
@@ -190,9 +191,9 @@ class Game:
         player = Player()
         settings = Settings()
         
-        print('\n')
+        c.print('\n')
         print_slow("You're in English class.\n" , t=0.01)
-        print('''\nWhat would you like to do?\n
+        c.print('''\nWhat would you like to do?\n
               1) Wait | 2) Escape
               3) Work | 4) Ask the Teacher a question\n''')
         
@@ -214,7 +215,7 @@ class Game:
 
     def wait(self):
         
-        print('\n')
+        c.print('\n')
         print_slow('You wait...\n' , t=0.1)
         time.sleep(1.5)
         print_slow('You wait even longer...\n' , t=0.2)
@@ -228,7 +229,7 @@ class Game:
             print_slow('The bell goes.. so you decide to escape\n')
             self.escape()
         
-        print('\n')
+        c.print('\n')
         game.eng_class()
         
     def escape(self):
@@ -236,62 +237,62 @@ class Game:
         if Settings.Teacher == True:
             
             if Settings.Classroom_escape_attempts == 0:
-                print('\n')
+                c.print('\n')
                 print_slow('The teacher caught you. You now have detention.')
                 time.sleep(1)
-                print('\n')
+                c.print('\n')
                 Settings.Classroom_escape_attempts = Settings.Classroom_escape_attempts + 1
                 
             elif Settings.Classroom_escape_attempts == 1:
-                print('\n')
+                c.print('\n')
                 print_slow('The teacher caught you again. Really? twice??')
                 time.sleep(1)
-                print('\n')
+                c.print('\n')
                 Settings.Classroom_escape_attempts = Settings.Classroom_escape_attempts + 1
             
             elif Settings.Classroom_escape_attempts == 2:
-                print('\n')
+                c.print('\n')
                 print_slow('Okay.. if it didnt work the 1st 2 times why would it work now?')
                 time.sleep(1)
-                print('\n')
+                c.print('\n')
                 Settings.Classroom_escape_attempts = Settings.Classroom_escape_attempts + 1
             
             elif Settings.Classroom_escape_attempts == 3:
-                print('\n')
+                c.print('\n')
                 print_slow('Why am i still programming more...?')
                 time.sleep(1)
-                print('\n')
+                c.print('\n')
                 Settings.Classroom_escape_attempts = Settings.Classroom_escape_attempts + 1
             
             elif Settings.Classroom_escape_attempts == 4:
-                print('\n')
+                c.print('\n')
                 print_slow('Nope.')
                 time.sleep(1)
-                print('\n')
+                c.print('\n')
                 Settings.Classroom_escape_attempts = Settings.Classroom_escape_attempts + 1
                 
             elif Settings.Classroom_escape_attempts > 4:
-                print('\n')
+                c.print('\n')
                 print_slow(f'The developer personally slaps you after trying to escape {Settings.Classroom_escape_attempts + 1} times..')
                 time.sleep(1)
-                print('\n')
+                c.print('\n')
                 Settings.Classroom_escape_attempts = Settings.Classroom_escape_attempts + 1
                 
             self.eng_class()
             
         else:
             
-            print('\n')
+            c.print('\n')
             print_slow('You have escaped to the hallway.')
             time.sleep(1)
             self.hallway()
-            print('\n')
+            c.print('\n')
             
     def work(self):
         
         if Settings.Work == False:
         
-            print('\n')
+            c.print('\n')
             print_slow("You do you'r work..\n")
             time.sleep(1)
             print_slow("You are close to finishing..\n")
@@ -300,7 +301,7 @@ class Game:
             
             time.sleep(.5)
             
-            print('''What is a noun?\n
+            c.print('''What is a noun?\n
                     1) A word to describe an object / thing \n
                     2) A word to identify an object / thing \n
                     3) A word to describe an action\n''')
@@ -310,58 +311,58 @@ class Game:
             
             if ans == 2:
                 
-                print('\n')
+                c.print('\n')
                 print_slow("Correct,  you got awarded with a Hall Pass \n")
                 time.sleep(1)
                 player.pick_up_item("Hall Pass")
                 Settings.Work = True
-                print('\n')
+                c.print('\n')
                 self.eng_class()
                 
             else:
                 
-                print('\n')
+                c.print('\n')
                 print_slow("Incorrect, you should be disapaionted in yourself.")
                 time.sleep(1)
-                print('\n')
+                c.print('\n')
                 self.eng_class()
                 
         else:
             
-            print('\n')
+            c.print('\n')
             print_slow('You already did your work... Nerd')
             time.sleep(1)
-            print('\n')
+            c.print('\n')
             self.eng_class()
             
     def ask(self):
         
         if Settings.Teacher == True:
         
-            print('\n')
-            print('''What do you want to ask the teacher?\n
+            c.print('\n')
+            c.print('''What do you want to ask the teacher?\n
                 1) Can I use the bathroom?
                 2) Insult the teacher
                 3) When is the bell?''')
-            print('\n')
+            c.print('\n')
             
             ans = int(p.ask('[>] Select an option',
                             choices=['1','2','3']))
             
             if ans == 1:
-                print('\n')
+                c.print('\n')
                 print_slow("I don't know, caaaaannnn yooouuu???")
-                print('\n')
+                c.print('\n')
                 p.ask('[>] Rephrase the sentence',
                                 choices=['May I use the bathroom please?'])
-                print('\n')
+                c.print('\n')
                 print_slow("Hahahaha lol, no (personally i would'nt accept this level of disrespect)")
-                print('\n')
+                c.print('\n')
                 Settings.Disresected = True
                 game.eng_class()
                 
             elif ans == 2:
-                print('\n')
+                c.print('\n')
                 print_slow("You ask the teacher how much they get paid...\n")
                 time.sleep(2)
                 print_slow('Teacher didnt like that.\n' ,t=0.3)
@@ -369,24 +370,24 @@ class Game:
                 
                 if Settings.Disresected == True:
                     print_slow('The teacher has discrspected me before.. time to pay..')
-                    print('\n')
+                    c.print('\n')
                     time.sleep(2)
                 
                 animation('TEACHER FIGHT!')
                 print_slow('||| Fight Initiated |||')
-                print('\n')
+                c.print('\n')
                 
                 time.sleep(2)
                 
                 enemy = Enemy()
                 enemy.fight(name='Teacher')
-                print('\n')
+                c.print('\n')
                 
             elif ans == 3:
-                print('\n')
+                c.print('\n')
                 print_slow('When I want lololol hahahaha')
                 Settings.Disresected = True
-                print('\n')
+                c.print('\n')
                 game.eng_class()
                 
         else: print_slow('The teacher isnt present anymore...... huh, i wonder why.') ; self.eng_class()
@@ -408,16 +409,16 @@ class Enemy:
              
             while player.health > 0 and enemy_health > 0:
                 
-                print(f'''
+                c.print(f'''
                       Your Health: {round(float(player.health),1)}\n
                       Your Damage: {round(float(player.damage),1)}\n
                       ----------------\n
                       Enemy Health: {round(float(enemy_health),1)}\n
                       Enemy Damage: {round(float(enemy_damage),1)}\n''')
                 
-                print("What do you want to do?\n1) Attack\n2) Defend\n3) Insult\n4) Apologise\n")
+                c.print("What do you want to do?\n1) Attack\n2) Defend\n3) Insult\n4) Apologise\n")
                 choice = input('[>] Enter an option: ')
-                print('\n')
+                c.print('\n')
                 
                 if choice == "1":
                     enemy_health -= round((float(player.damage)) , 1)
@@ -471,7 +472,7 @@ class Enemy:
                     
                 if enemy_health <= 0:
                     
-                    print("You defeated the enemy!\n")
+                    c.print("You defeated the enemy!\n")
                     
                     if name == 'Teacher':
                         player.pick_up_item("Key Card")
@@ -483,12 +484,12 @@ class Enemy:
                     player.level_up()
                     player.reset()
                     
-                    print("\n")
+                    c.print("\n")
                     
                     game.eng_class()
                     
                 if player.health <= 0:
-                    print('\n')
+                    c.print('\n')
                     print_slow("You have been defeated\n")
                     Settings.Disresected = True
                     player.reset()
@@ -496,7 +497,7 @@ class Enemy:
                     
                 
                     
-        else: print('enemy not found')
+        else: c.print('enemy not found')
 
 
         
